@@ -1,0 +1,33 @@
+from openai import OpenAI
+
+client = OpenAI(api_key="YOUR_API_KEY_HERE")
+
+print("🤖 AI Bot: Hey! I'm your AI assistant. Type 'exit' to stop.\n")
+
+# Store conversation
+messages = [
+    {"role": "system", "content": "You are a friendly and intelligent AI assistant helping students."}
+]
+
+while True:
+    user_input = input("You: ")
+
+    if user_input.lower() == "exit":
+        print("AI Bot: Goodbye! Keep learning 🚀")
+        break
+
+    messages.append({"role": "user", "content": user_input})
+
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=messages
+        )
+
+        reply = response.choices[0].message.content
+        print("AI Bot:", reply)
+
+        messages.append({"role": "assistant", "content": reply})
+
+    except Exception as e:
+        print("Error:", e)
